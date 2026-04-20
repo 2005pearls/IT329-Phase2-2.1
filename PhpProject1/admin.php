@@ -4,13 +4,13 @@ error_reporting(E_ALL);
 session_start();
 require_once(__DIR__ . "/config/db.php");
  
-// ── 11a. Check admin ──────────────────────────────────────────────────────────
+// Check admin 
 if (!isset($_SESSION['userID']) || $_SESSION['userType'] != "admin") {
     header("Location: login.php?error=Access+denied.+Admins+only.");
     exit();
 }
  
-// ── 11b. Get admin info ───────────────────────────────────────────────────────
+//  Get admin info 
 $adminID = $_SESSION['userID'];
  
 $stmt = mysqli_prepare($conn, "SELECT firstName, lastName, emailAddress FROM user WHERE id = ?");
@@ -22,9 +22,8 @@ mysqli_stmt_close($stmt);
  
 $adminName = $firstName ;
  
-// ── 11c. Get all recipe reports ───────────────────────────────────────────────
-// recipe columns: id, userID, categoryID, name, photoFileName
-// report columns: id, userID, recipeID
+//  Get all recipe reports 
+
 $reportsResult = mysqli_query($conn, "
     SELECT 
         r.id                AS reportID,
@@ -41,7 +40,7 @@ $reportsResult = mysqli_query($conn, "
     ORDER BY r.id DESC
 ");
  
-// ── 11d. Get blocked users ────────────────────────────────────────────────────
+//  Get blocked users
 // blockeduser columns: id, firstName, lastName, emailAddress
 $blockedResult = mysqli_query($conn, "
     SELECT firstName, lastName, emailAddress 
@@ -78,7 +77,7 @@ $blockedResult = mysqli_query($conn, "
                 <a href="process/logout.php" class="link">Sign out</a>
             </div>
  
-            <!-- 11b. Admin Information -->
+            <!--  Admin Information -->
             <div class="card">
                 <div class="section-title">My Information</div>
                 <div class="info-row">
@@ -91,7 +90,7 @@ $blockedResult = mysqli_query($conn, "
                 </div>
             </div>
  
-            <!-- 11c. Reported Recipes -->
+            <!-- Reported Recipes -->
             <div class="card admin-table">
                 <div class="section-title">Reported Recipes</div>
  
@@ -156,7 +155,7 @@ $blockedResult = mysqli_query($conn, "
                 <?php endif; ?>
             </div>
  
-            <!-- 11d. Blocked Users -->
+            <!--  Blocked Users -->
             <div class="card">
                 <div class="section-title">Blocked Users List</div>
                 <table>
